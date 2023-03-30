@@ -6,12 +6,14 @@ RatCount = 0
 Money = 0
 Snacks = ''
 Trenchcoat = False
-MovieTicket = False
 Intro = "This is a story of a rat. Now, this is no ordinary rat, this is about a rat with a dream. An important one too.  So important, in fact, that he usually goes by: Steve O'Malley, Lord of Steveniros, and Ultimate Champions of all things Steve.\n\nBut you can just call him Steve.\n\nThe tragic reality of being a rat is that there are many things that they cannot do. This will not stop Steve from achieving his ultimate dream.\n\nTo go watch a movie in a movie theatre.\n\nNow, Steve could just sneak in, but that would ruin the experience. To fully experience this incredible event, he'll need to disguise himself as a human.\n\nYour job is to lead him through the sewers to the movie theatre while collecting everything he'll need to fully experience a movie."
 Instructions = "You're going to need a couple of things to get into the movie theatre.\n\nFirst, you'll needs a trench coat! Everyone know that for a rat to impersonate a human, it needs a trench coat to pull it off.\n\nSecond, you'll need some rat friends to help fill out the trench coat. Maybe about 30 of them?\n\nThird, you need to buy a movie ticket once you get to the movie theatre. About $13 will do.\n\nLastly, don't forget a snack! No movie is complete without one.\n\n"
 StartPoint = "Starting off on this epic journey, Steve doesn't know where to start and he could use some help. Where do YOU want to go first?"
-AsciiRat = "                        ____    .-.\n                     .-\"`    `\",( __\_\n      .-==:;-._    .'         .-.     `'.\n    .'      `\"-:'-/          (  \} -=a  .)\n   /            \/       \,== `-  __..-'`\n'-'              |       |   |  .'\ `;\n                  \    _/---'\ (   `\"`\n                 /.`._ )      \ `;\n                 \`-/.'        `\"`\n                  `\"\`-.\n                     `\"`"
+AsciiRat = "                        ____    .-.\n                     .-\"`    `\",( __\_\n      .-==:;-._    .'         .-.     `'.\n    .'      `\"-:'-/          (  \} -=a  .)    <--- This is Steve.\n   /            \/       \,== `-  __..-'`\n'-'              |       |   |  .'\ `;\n                  \    _/---'\ (   `\"`\n                 /.`._ )      \ `;\n                 \`-/.'        `\"`\n                  `\"\`-.\n                     `\"`"
 InvRat = " _  _\n(o)(o)--.\n \../ (  )    You're inventory is empty.\n m\/m--m\'`--."
+AsciiCity = "                                    +              \n                                   / \\\n _____        _____     __________/ o \/\_________      _________\n|o o o|_______|    |___|               | | # # #  |____|o o o o  | /\\\n|o o o|  * * *|: ::|. .|               |o| # # #  |. . |o o o o  |//\\\\\n|o o o|* * *  |::  |. .| []  []  []  []|o| # # #  |. . |o o o o  |((|))\n|o o o|**  ** |:  :|. .| []  []  []    |o| # # #  |. . |o o o o  |((|))\n|_[]__|__[]___|_||_|__<|____________;;_|_|___/\___|_.|_|____[]___|  |\n"
+AsciiSewer = " .   .            .   .           .   .\n( ).( )          ( ).( )         ( ).( )\n (o o) .-._.\"     (o o) .-._.\"    (o o) .-._.\"\n(  -  )          (  -  )         (  -  )\n mm mm            mm mm           mm mm"
+AsciiBreak = "        _\n       (( )_,     ,\n.--.    \ '/     /.\\\n    )   / \=    /O o\     _\n   (   / _/    /' o O| ,_( ))___     (`\n    `-|   )_  /o_O_'_(  \\'    _ `\    ) \n      `\"\"\"\"`            =`---<___/---'\n                            \"`"
 Line = "__________________________________________________________________________________"
 
 #functions to print different colors
@@ -38,20 +40,22 @@ def PrintDelay(text):
     '''function that creates a delay in the output and also textwraps.
     Treat like a print() function'''
     Lines = text.split('\n')
+    #separate lines by newline
     for rLine in Lines:
+        #for text wrapping
         WrapText = textwrap.fill(rLine, width=80)
+        #loop through charaters
         for i, char in enumerate(WrapText):
-            if i > 0 and WrapText[i-1] != ' ':
-                time.sleep(0.005)
             print(char, end='', flush=True)
             time.sleep(0.05)
+        #to handle \n
         print()
-        time.sleep(0.01)
+        time.sleep(0.05)
 
 def CheckInv():
     '''function used to check what the user has collected'''
     #if there's nothing in the inventory
-    if not RatCount and not Money and not Trenchcoat and not MovieTicket and not Snacks:
+    if not RatCount and not Money and not Trenchcoat and not Snacks:
         print(Line)
         print(InvRat)
         InvWait()
@@ -69,9 +73,9 @@ def CheckInv():
             PrintGreen(Rats)
         if 1 <= Money <= 7:
             PrintRed(StMoney)
-        elif 8 <= Money <= 13:
+        elif 8 <= Money <= 12:
             PrintYellow(StMoney)
-        elif Money >= 14:
+        elif Money >= 13:
             PrintGreen(StMoney)
         if Trenchcoat is True:
             PrintGreen("| Trenchcoat Obtained: 1       |")
@@ -81,8 +85,53 @@ def CheckInv():
         InvWait()
 
 def GoMovie():
-    print("Steve went to the movies")
-    return
+    if RatCount < 30 or Money < 13 or Trenchcoat is False or Snacks == '':
+        PrintDelay("Steve went to the movies even though he wasn't completely ready. He likes to live life on the edge.\n")
+    if RatCount >=30 and Money >= 13 and Trenchcoat is True and Snacks != '':
+        if Snacks != '':
+            PrintDelay("Steve heads on over to the movies, knowing with surity that he has everything he could possibly need for this movie.\n")
+        if Snacks == '':
+            PrintDelay("Steve heads on over to the movies, knowing with surity that he has everything he could possibly need for this movie.\n\nWell... probably.\n")
+    if Trenchcoat is False:
+        PrintDelay("To bad for him, though, because Steve doesn't even have a trenchcoat for all of his rat friends to fit into. There's no way they'll be able to impersonate a human.\n")
+        if RatCount < 30:
+            PrintDelay("Well, that would be a problem if Steve even had enough rat buddies. \n\nWhich he doesn't.\n\nMaybe if Steve had actually tried, he wouldn't be this dissapointed.\n")
+        else:
+            PrintDelay("He looks at all the rats that trusted his to lead them on this journey.\n\nHe had failed them.\n\nThe guilt of this moment would never leave Steve.\n\nHe was an absolute failure.\n")
+    else:
+        PrintDelay("While he has dragged the trenchcoat through the city, it has gotten quite dirty, but that's fine. No rat would care about a little dirt.\n")
+        if RatCount < 30:
+            PrintDelay("It's also not a problem, because there arent even enough rats to fill out the trenchcoat.\n\n In a single moment, all Steve's hopes and dreams are crushed.\n\n")
+        else:
+            PrintDelay("Steve directs the rats into the trenchcoat one by one. Once they're all inside, it's a little lumpy, and their 'human face' leave a lot to be desired, but it'll work.\n")
+    if Money < 13:
+        PrintDelay(f"Then he counts out the money he had collected along the way.\n\nHe comes up short with only ${Money}. The horror washes over him.\n\n All this hard work for nothing...\n")
+    else:
+        PrintDelay(f"Steve counts the money he has, and luckily he has enough, at ${Money}. He breathes out a sigh of relief.\n")
+    if RatCount < 30 or Money < 13 or Trenchcoat is False:
+        PrintDelay("With things the way they are, there's only one thing to do.\n\nSteve ditches any of the rats he gathered and sneaks into the movie theatre through the back to at least get a taste of the full movie experience. He crawls as quietly as possible and makes it inside.\n\nIt only takes a moment for someone to notice and they start screaming.\n\nSteve is chased outside, and he'll never recover from this horrible day...\n")
+        PrintRed("\nYou failed. Press enter to exit the game...")
+        input()
+        exit()
+    else:
+        PrintDelay("The bumpy, unsightly mass of rats in a trenchcoat walk up to the ticket booth. Luckily for Steve the employee doesn't even question it.\n\nThey've seen weirder.\n")
+        PrintDelay("While Steve doesn't speak human, he's a great pantomime.\n\nControlling the rat mass he pantomimes what movie he wants to watch and hands the employee the money for the ticket. Through some miracle everything goes great, and Steve now has a ticket to Sharknado 23.\n")
+        PrintDelay("The rat mass enters the movie and takes a seat.\n\nSteve has never been more ecstatic in his life.\n")
+        if Snacks == '':
+            PrintDelay("As the movie starts, Steve realizes in horror that he forgot a snack. All this hard work, and to get this far...\n\nAll for nothing.\n\nFor the rest of the movie, Steve can't even see anything through the tears in his eyes...")
+            PrintRed("\nYou failed. Press enter to exit the game...")
+            input()
+            exit()
+        if Snacks != 'cheese':
+            PrintDelay(f"As the movie starts, Steve takes out the {Snacks}. Steve enjoys the absolute masterpiece that it Sharknado 23, but he kinda wishes he had gotten a better snack...")
+            PrintRed("\nYou failed. Press enter to exit the game...")
+            input()
+            exit()
+        else:
+            PrintDelay("As the movie starts, Steve smuggly takes out the cheese he had found previously. An amazing snack with an amazing movie. Nothing could possible beat this moment.\n")
+            PrintGreen("\nYou did it! Press enter to exit the game...")
+            input()
+            exit()
 
 """
                             HERE'S ALL THE FUNCTIONS
@@ -194,12 +243,12 @@ Riddles = {
     5: {
         'text': "I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?",
         'answer': "fire",
-        'hint': "\nBest to stay away when you see one. It's burned Steve's fur a couple of times...\n",
+        'hint': "\nBest not to get to close to these or they'll burn you...\n",
     },
     6: {
         'text': "The more you look at it, the less you see. What is it?",
         'answer': "darkness",
-        'hint': "\nSteve can't see sometimes in the sewers. Especially at night...\n",
+        'hint': "\nSteve can't see in the sewers sometimes because of how dark it is. Especially at night...\n",
     },
 }
 def Riddle():
@@ -255,7 +304,7 @@ def Riddle():
                 RiddleDone = True
 
 def RockPaperScissors():
-    PrintDelay("\nThere's a rat that wants to play Rock Paper Scissors with you.")
+    PrintDelay("\nSteve finds a rat that wants to play rock paper scissors with you. Maybe if you win, they'll help you find some rats for your adventure!")
     PrintYellow("\n+--------------+\n| 1. Rock      |\n| 2. Paper     |\n| 3. Scissors  |\n+--------------+\n\n")
     while True:
         User = input("Your Choice: ")
@@ -273,6 +322,10 @@ def RockPaperScissors():
             PrintDelay("It's a tie! Try again.")
         elif (UserNum == 1 and Computer == 3) or (UserNum == 3 and Computer == 2) or (UserNum == 2 and Computer == 1):
             PrintDelay("You won!")
+            AddRat = random.randint(8, 10)
+            global RatCount
+            RatCount += AddRat
+            PrintDelay(f"\n{AddRat} rats have joined you on your journey.")
             break
         else:
             PrintDelay("You lost! Try again.")
@@ -297,6 +350,7 @@ BadPick = "\nWell, who knows if we'll find a different snack. Might as well take
 DontPick = "Surely there's a better snack out there! Steve will keep looking.\n\n"
 
 def BadSnack(snack):
+    global Snacks
     PrintDelay(f"Steve found a(n) {snack}. That would work as a snack, but it's not the best...\n\nDo you want to take it anyways?\n")
     PrintYellow(SnackYN)
     while True: 
@@ -322,9 +376,14 @@ def CityChoice():
     TunaOption = False
     SandwichOption = False
     CheeseOption = False
-    PrintDelay("\nSteve agrees that he should go to the city. He could find a snack or maybe even a trench coat there.")
+    
+    PrintDelay("\nSteve agrees that he should go to the city. He could find a snack or maybe even a trench coat there.\n")
+    print(AsciiCity)
+    print(Line)
+    Wait()
 
     while True:
+        PrintDelay("\nWhere would you like to go?\n")
         PrintYellow("+---------------------------+\n| 1. Turn left               |\n| 2. Turn right              |\n| 3. Go to the movie theatre |\n| 4. Check inventory         |\n| 5. Leave                   |\n+----------------------------+\n")
         User = input("Your Choice: ")
         print("\n")
@@ -347,7 +406,7 @@ def CityChoice():
                     PrintDelay("Steve runs down a road looking around, and sees some change on the ground. What luck!\n")
                     PrintDelay(f"${MoneyGain} has been added to you inventory")
                 elif 51 >= Chance <= 63:
-                    PrintDelay("As Steve looks around, he sees something under a bush...")
+                    PrintDelay("As Steve looks around, he sees something under a bush...\n")
                     if Trenchcoat == False:
                         Trenchcoat = True
                         PrintDelay("Steve found a trench coat! It'll be hard to carry, but Steve never skips leg day!")
@@ -359,7 +418,7 @@ def CityChoice():
                 elif 64 >= Chance <= 76:
                     MoneyGain = random.randint(3, 4)
                     Money += MoneyGain
-                    PrintDelay("There's a small park the Steve sees as he turns. He searches around for a while and finds ${MoneyGain}. Steve wonders if taking this is ethical...\n\nWell, Steve's a rat, so he doesn't care about ethics!\n\n")
+                    PrintDelay(f"There's a small park the Steve sees as he turns. He searches around for a while and finds ${MoneyGain}. Steve wonders if taking this is ethical...\n\nWell, Steve's a rat, so he doesn't care about ethics!\n")
                     PrintDelay(f"${MoneyGain} has been added to you inventory")
                 elif 77 >= Chance <= 89:
                     PrintDelay("look underneath a newspaper")
@@ -404,7 +463,7 @@ def CityChoice():
                     if Snacks != '' or CheeseOption == True:
                         MoneyGain = random.randint(1, 2)
                         Money += MoneyGain
-                        PrintDelay(f"")
+                        PrintDelay(f"Steve find a tree surrounded by trash. As he digs inside he find some money!\n")
                         PrintDelay(f"${MoneyGain} has been added to you inventory")
                     else:
                         SnackOption = 'cheese'
@@ -460,6 +519,7 @@ def SewerChoice():
     while LeaveSewer is False:
         Continue = False
         PrintDelay("Steve agrees that he should go to the sewers. He could find some rat buddies there.\n\nHe scurries down...\n")
+        print(AsciiSewer)
         print(Line)
         Wait()
         CupGame()
@@ -471,6 +531,7 @@ def SewerChoice():
             print("\n")
             if User == '1':
                 PrintDelay("Steve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
@@ -485,11 +546,12 @@ def SewerChoice():
         LeaveSewer = False
         Continue = False
         while Continue is False:
-            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                |\n+----------------------------+\n")
+            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                   |\n+----------------------------+\n")
             User = input("Your Choice: ")
             print("\n")
             if User == '1':
                 PrintDelay("\nSteve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
@@ -500,17 +562,17 @@ def SewerChoice():
                 LeaveSewer = True
                 Continue = True
                 return
-        
         PrintDelay("A rat crawls out from the shadows of the sewer.\n\n\"Hey, you. Yeah, you. I heard you were trying to get into the movies.\"\n\n\"If you turn left enough in the city, you'll find a trenchcoat. Don't ask me how I know...\"\n\nThe rat joins you on your journey.\n")
         RatCount += 1
         LeaveSewer = False
         Continue = False
         while Continue is False:
-            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                |\n+----------------------------+\n")
+            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                   |\n+----------------------------+\n")
             User = input("Your Choice: ")
             print("\n")
             if User == '1':
                 PrintDelay("\nSteve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
@@ -525,11 +587,12 @@ def SewerChoice():
         LeaveSewer = False
         Continue = False
         while Continue is False:
-            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                |\n+----------------------------+\n")
+            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                   |\n+----------------------------+\n")
             User = input("Your Choice: ")
             print("\n")
             if User == '1':
                 PrintDelay("\nSteve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
@@ -545,11 +608,12 @@ def SewerChoice():
         LeaveSewer = False
         Continue = False
         while Continue is False:
-            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                |\n+----------------------------+\n")
+            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                   |\n+----------------------------+\n")
             User = input("Your Choice: ")
             print("\n")
             if User == '1':
                 PrintDelay("\nSteve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
@@ -564,11 +628,12 @@ def SewerChoice():
         LeaveSewer = False
         Continue = False
         while Continue is False:
-            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                |\n+----------------------------+\n")
+            PrintYellow("+---------------------------+\n| 1. Continue                |\n| 2. Check Inventory         |\n| 3. Leave                   |\n+----------------------------+\n")
             User = input("Your Choice: ")
             print("\n")
             if User == '1':
                 PrintDelay("\nSteve continues down the sewer...\n")
+                print(AsciiBreak)
                 print(Line)
                 Wait()
                 Continue = True
